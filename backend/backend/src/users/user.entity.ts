@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Medicine } from "src/medicine/medicine.entity";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 
 @Entity()
 export class User {
@@ -17,5 +18,6 @@ export class User {
     @Column({ default: false })
     isVerified: boolean;
 
-
+    @OneToMany(() => Medicine, (medicine) => medicine.user)
+    medicine: Medicine[];
 }
