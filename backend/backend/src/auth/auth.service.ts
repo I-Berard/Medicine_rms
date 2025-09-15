@@ -1,9 +1,12 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
+import * as jwt from 'jsonwebtoken';
+import { ConfigService } from '@nestjs/config';
 
-class LoginData {
+
+export class LoginData {
     email: string
     password: string
 }
@@ -13,13 +16,15 @@ class LoginReturn {
     token: string;
 }
 
-class SingUpData {
+export class SingUpData {
     name: string
     email: string
     password: string
 }
 
 class SignUpReturn {
+    data: any
+    token: string
     message: string
 }
 
@@ -27,7 +32,8 @@ class SignUpReturn {
 export class AuthService {
     constructor(
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>
+        private readonly userRepository: Repository<User>,
+        private configService: ConfigService
     ){}
 
     async login(data: LoginData): Promise<LoginReturn>{
@@ -37,18 +43,35 @@ export class AuthService {
         if(data.password !== user.password){
             throw new UnauthorizedException("Password not correct") //This has to be changed because the error is incorrect
         }
+        
+        const {password, medicine, ...safeUser} = user;
+
+        const secret = this.configService.get<string>('SECRET')!;
+        const token = jwt.sign(safeUser, secret);
 
         return {
-            data: data,
-            token: "fake-token"
+            data: safeUser,
+            token: token
         }
     }
 
     async signup(data: SingUpData): Promise<SignUpReturn>{
+        const existingUser = await this.userRepository.findOne({
+            where: {
+                email: data.email
+            }
+        })
+
+        if(existingUser) throw new BadRequestException("User already exists");
+
         const user = this.userRepository.create(data);
 
+        const {password, medicine, ...safeUser} = user; 
+
         return {
-            message: "User created successfully"
+            data: safeUser,
+            token: "simple",
+            message: "User created successfully" //implement fallback if the user is already in the database
         }
     }
     
