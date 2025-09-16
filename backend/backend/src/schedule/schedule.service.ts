@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Schedule } from 'src/schedule/shedule.entity';
-import { CreateScheduleDto } from './dto/create_schedule.dto';
+import { CreateScheduleIntervalDto, CreateScheduleTimesDto } from './dto/create_schedule.dto';
 import { UpdateScheduleDto } from './dto/update_schedule.dto';
 
 @Injectable()
@@ -12,7 +12,12 @@ export class ScheduleService {
     private readonly scheduleRepo: Repository<Schedule>,
   ) {}
 
-  async createSchedule(input: CreateScheduleDto): Promise<Schedule> {
+  async createIntervalSchedule(input: CreateScheduleIntervalDto): Promise<Schedule> {
+    const schedule = this.scheduleRepo.create(input);
+    return this.scheduleRepo.save(schedule);
+  }
+
+  async createTimesSchedule(input: CreateScheduleTimesDto): Promise<Schedule>{
     const schedule = this.scheduleRepo.create(input);
     return this.scheduleRepo.save(schedule);
   }

@@ -11,7 +11,7 @@ export class CreateMedicineDto {
 
     @IsString()
     @IsNotEmpty()
-    dexcription: string;
+    description: string;
 
     @IsOptional()
     times_per_day: string[];

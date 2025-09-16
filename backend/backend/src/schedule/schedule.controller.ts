@@ -1,5 +1,5 @@
 import { Get, Controller, Put, Patch, Post, Body, Inject, Param, Delete } from "@nestjs/common";
-import { CreateScheduleDto } from "./dto/create_schedule.dto";
+import { CreateScheduleTimesDto, CreateScheduleIntervalDto } from "./dto/create_schedule.dto";
 import { Schedule } from "./shedule.entity";
 import { ScheduleService } from "./schedule.service";
 import { UpdateScheduleDto } from "./dto/update_schedule.dto";
@@ -11,11 +11,18 @@ export class ScheduleController {
     ){}
 
     @Post()
-    async createSchedule(@Body() input: CreateScheduleDto): Promise<Schedule> {
-        const schedule = await this.scheduleService.createSchedule(input);
+    async createTimesSchedule(@Body() input: CreateScheduleTimesDto): Promise<Schedule> {
+        const schedule = await this.scheduleService.createTimesSchedule(input);
 
         return schedule
-    }    
+    }
+    
+    @Post()
+    async createIntervalSchedule(@Body() input: CreateScheduleIntervalDto): Promise<Schedule>{
+        const schedule = await this.scheduleService.createIntervalSchedule(input);
+
+        return schedule
+    }
 
     @Get()
     async findAll(): Promise<Schedule[]>{

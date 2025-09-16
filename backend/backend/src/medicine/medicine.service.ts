@@ -25,7 +25,7 @@ export class MedicineService {
     async findOne(id: number): Promise<Medicine> {
         const medicine = await this.med_repo.findOne({
             where: { id },
-            relations: ["user", 'shedule'],
+            relations: ["user", 'schedule'],
         })
 
         if(!medicine) throw new NotFoundException("Medicine not found");

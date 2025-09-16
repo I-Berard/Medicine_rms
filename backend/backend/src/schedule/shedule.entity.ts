@@ -6,17 +6,17 @@ export class Schedule {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Medicine, (medicine) => medicine.schedules, {eager: true})
+  @ManyToOne(() => Medicine, (medicine) => medicine.schedule, {eager: true})
   @JoinColumn({ name: 'medicine_id' })
   medicine: Medicine;
 
-  @Column('simple-array')
+  @Column('simple-array', {default: null})
   times_of_the_day: string[];
 
-  @Column()
+  @Column({default: null})
   interval_hours: number;
 
-  @Column()
+  @Column({default: null})
   start_time: string;
 
   @Column()

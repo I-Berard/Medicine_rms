@@ -16,7 +16,7 @@ export class Medicine {
   @Column()
   description: string;
 
-  @Column('simple-array')
+  @Column('simple-array', {default: null})
   times_per_day: string[]; 
 
   @ManyToOne(() => User, (user) => user.medicine)
@@ -24,5 +24,5 @@ export class Medicine {
   user: User;
 
   @OneToMany(() => Schedule, (schedule) => schedule.medicine)
-  schedules: Schedule[];
+  schedule: Schedule[];
 }
