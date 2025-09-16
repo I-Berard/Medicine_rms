@@ -1,9 +1,13 @@
-import { Injectable, NestMiddleware, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NestMiddleware, UnauthorizedException } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
+  constructor(
+    private configService: ConfigService
+  ){}
   use(req: Request, res: Response, next: NextFunction) {
     const authHeaders = req.headers['authorization'];
     if (!authHeaders){
@@ -16,13 +20,13 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     try {
-      const decoded = jwt.verify(token, "simple"); // the secret has to be updated 
+      const secret = this.configService.get<string>("SECRET")!
+      const decoded = jwt.verify(token, secret); // the secret has to be updated 
       (req as any).user = decoded;
       next();
 
     }catch(err){
-
+      throw new ForbiddenException("The token is invalid");
     }
-    next();
   }
 }

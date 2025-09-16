@@ -4,6 +4,7 @@ import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
+import { UserService } from 'src/users/user.service';
 
 
 export class LoginData {
@@ -14,6 +15,7 @@ export class LoginData {
 class LoginReturn {
     data: any;
     token: string;
+    message: string;
 }
 
 export class SingUpData {
@@ -38,7 +40,7 @@ export class AuthService {
 
     async login(data: LoginData): Promise<LoginReturn>{
         const user = await this.userRepository.findOne({where: {email: data.email}})
-        if(!user) throw new NotFoundException("User not found, First login")
+        if(!user) throw new NotFoundException("User not found, First signup")
         
         if(data.password !== user.password){
             throw new UnauthorizedException("Password not correct") //This has to be changed because the error is incorrect
@@ -51,7 +53,8 @@ export class AuthService {
 
         return {
             data: safeUser,
-            token: token
+            token: token,
+            message: "Success"
         }
     }
 
@@ -65,12 +68,17 @@ export class AuthService {
         if(existingUser) throw new BadRequestException("User already exists");
 
         const user = this.userRepository.create(data);
+        await this.userRepository.save(user);
+        console.log(user);
 
-        const {password, medicine, ...safeUser} = user; 
+        const {password, medicine, ...safeUser} = user;
+        
+        const secret = this.configService.get<string>("SECRET")!;
+        const token = jwt.sign(safeUser, secret);
 
         return {
             data: safeUser,
-            token: "simple",
+            token: token,
             message: "User created successfully" //implement fallback if the user is already in the database
         }
     }
