@@ -4,6 +4,7 @@ import { Schedule } from './shedule.entity';
 import { Medicine } from 'src/medicine/medicine.entity';
 import { ScheduleController } from './schedule.controller';
 import { ScheduleService } from './schedule.service';
+import { MedicineService } from 'src/medicine/medicine.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Schedule, Medicine])],

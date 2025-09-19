@@ -10,14 +10,14 @@ export class ScheduleController {
         private readonly scheduleService: ScheduleService
     ){}
 
-    @Post()
+    @Post('times')
     async createTimesSchedule(@Body() input: CreateScheduleTimesDto): Promise<Schedule> {
         const schedule = await this.scheduleService.createTimesSchedule(input);
 
         return schedule
     }
     
-    @Post()
+    @Post('interval')
     async createIntervalSchedule(@Body() input: CreateScheduleIntervalDto): Promise<Schedule>{
         const schedule = await this.scheduleService.createIntervalSchedule(input);
 

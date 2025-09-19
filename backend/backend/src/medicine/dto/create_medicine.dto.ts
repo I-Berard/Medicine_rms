@@ -5,6 +5,9 @@ export class CreateMedicineDto {
     @IsNotEmpty()
     name: string;
 
+    @IsNumber()
+    user: number;
+
     @IsString()
     @IsNotEmpty()
     form: string;

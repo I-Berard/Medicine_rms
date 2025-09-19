@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsString, IsOptional, IsDateString, IsArray } fro
 export class CreateScheduleIntervalDto {
     @IsNumber()
     @IsNotEmpty()
-    medicine_id: number;
+    medicine: number;
 
     @IsOptional()
     @IsNumber()
@@ -21,7 +21,7 @@ export class CreateScheduleIntervalDto {
 export class CreateScheduleTimesDto {
     @IsNumber()
     @IsNotEmpty()
-    medicine_id: number;
+    medicine: number;
 
     @IsArray()
     @IsString({each: true})

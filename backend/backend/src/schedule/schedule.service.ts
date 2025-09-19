@@ -1,24 +1,44 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Schedule } from 'src/schedule/shedule.entity';
 import { CreateScheduleIntervalDto, CreateScheduleTimesDto } from './dto/create_schedule.dto';
 import { UpdateScheduleDto } from './dto/update_schedule.dto';
+import { MedicineService } from 'src/medicine/medicine.service';
+import { Medicine } from 'src/medicine/medicine.entity';
 
 @Injectable()
 export class ScheduleService {
   constructor(
     @InjectRepository(Schedule)
     private readonly scheduleRepo: Repository<Schedule>,
+    // private readonly medicineServ: MedicineService
+    @InjectRepository(Medicine)
+    private readonly medRepo: Repository<Medicine>
   ) {}
 
   async createIntervalSchedule(input: CreateScheduleIntervalDto): Promise<Schedule> {
-    const schedule = this.scheduleRepo.create(input);
+    const medicine = await this.medRepo.findOne({where: {id : input.medicine}});
+
+    if(!medicine) throw new NotFoundException('Medicine Not Found')
+
+    const schedule = this.scheduleRepo.create({
+      ...input,
+      medicine
+    });    
     return this.scheduleRepo.save(schedule);
   }
 
   async createTimesSchedule(input: CreateScheduleTimesDto): Promise<Schedule>{
-    const schedule = this.scheduleRepo.create(input);
+    const medicine = await this.medRepo.findOne({where: {id : input.medicine}});
+
+    if(!medicine) throw new NotFoundException('Medicine Not Found')
+
+    const schedule = this.scheduleRepo.create({
+      ...input,
+      medicine
+    });
+
     return this.scheduleRepo.save(schedule);
   }
 

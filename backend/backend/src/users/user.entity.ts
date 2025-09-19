@@ -18,6 +18,6 @@ export class User {
     @Column({ default: false })
     isVerified: boolean;
 
-    @OneToMany(() => Medicine, (medicine) => medicine.user)
+    @OneToMany(() => Medicine, (medicine) => medicine.user, {eager: true})
     medicine: Medicine[];
 }

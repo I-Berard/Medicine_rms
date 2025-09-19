@@ -20,5 +20,8 @@ export class Schedule {
   start_time: string;
 
   @Column()
+  times: number
+
+  @Column()
   medicine_type: string; 
 }
