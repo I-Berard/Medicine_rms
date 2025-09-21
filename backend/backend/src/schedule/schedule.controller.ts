@@ -3,11 +3,14 @@ import { CreateScheduleTimesDto, CreateScheduleIntervalDto } from "./dto/create_
 import { Schedule } from "./shedule.entity";
 import { ScheduleService } from "./schedule.service";
 import { UpdateScheduleDto } from "./dto/update_schedule.dto";
+import { NotificationService } from "src/notification/notification.service";
+import { NotificationDto } from "src/notification/dto/notification.dto";
 
 @Controller("schedule")
 export class ScheduleController {
     constructor(
-        private readonly scheduleService: ScheduleService
+        private readonly scheduleService: ScheduleService,
+        private readonly notificationService: NotificationService
     ){}
 
     @Post('times')
@@ -50,5 +53,12 @@ export class ScheduleController {
         const result = await this.scheduleService.removeSchedule(id);
         
         return result;
+    }
+
+    @Post('notification')
+    async getTimes(@Body() input: NotificationDto): Promise<Date[]> {
+        const notifications = this.notificationService.getNotificationTimes(input);
+
+        return notifications;
     }
 }

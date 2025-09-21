@@ -58,10 +58,20 @@ export class ScheduleService {
   }
 
   async updateSchedule(id: number, input: UpdateScheduleDto): Promise<Schedule> {
-    const schedule = await this.scheduleRepo.preload({ id, ...input });
+    const schedule = await this.scheduleRepo.findOne({ where: { id } });
     if (!schedule) throw new NotFoundException('Schedule not found');
+
+    if (input.medicine_id) {
+      const medicine = await this.medRepo.findOne({ where: { id: input.medicine_id } });
+      if (!medicine) throw new NotFoundException('Medicine not found');
+      schedule.medicine = medicine;
+    }
+
+    Object.assign(schedule, { ...input, medicineId: undefined });
+
     return this.scheduleRepo.save(schedule);
   }
+
 
   async removeSchedule(id: number): Promise<{ message: string }> {
     const result = await this.scheduleRepo.delete(id);

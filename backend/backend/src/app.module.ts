@@ -12,6 +12,8 @@ import { AuthMiddleware } from './auth/auth.middleware';
 import { UserController } from './users/user.controller';
 import { MedicineController } from './medicine/medicine.controller';
 import { ScheduleController } from './schedule/schedule.controller';
+import { NotificationService } from './notification/notification.service';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -29,10 +31,11 @@ import { ScheduleController } from './schedule/schedule.controller';
     ScheduleModule,
     MedicineModule,
     AuthModule,
-    ConfigModule.forRoot({isGlobal: true})
+    ConfigModule.forRoot({isGlobal: true}),
+    NotificationModule
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService],
+  providers: [AppService, NotificationService],
 })
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
