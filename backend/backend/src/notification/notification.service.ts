@@ -4,8 +4,8 @@ import { NotificationDto } from './dto/notification.dto';
 
 @Injectable()
 export class NotificationService {
-    getNotificationTimes(schedule: NotificationDto): Date[] {
-        const notifications: Date[] = [];
+    getNotificationTimes(schedule: NotificationDto): string[] {
+        const notifications: string[] = [];
         const now = new Date();
 
         if (schedule.medicine_type === 'fixed_times'){
@@ -16,7 +16,7 @@ export class NotificationService {
                 const date = new Date(today);
                 date.setHours(hours, minutes, 0, 0);
                 if(date > now){
-                    notifications.push(date)
+                    notifications.push(date.toLocaleString())
                 }
             }
         }else if(schedule.medicine_type === "interval"){
@@ -30,7 +30,8 @@ export class NotificationService {
             }
 
             for (let i = 0; i < 5; i++) {
-                notifications.push(new Date(start.getTime() + i * schedule.interval_hours! * 60 * 60 * 1000));
+                const next = new Date(start.getTime() + i * schedule.interval_hours! * 60 * 60 * 1000)
+                notifications.push(next.toLocaleString());
             }
 
         }
