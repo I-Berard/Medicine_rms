@@ -56,8 +56,8 @@ export class ScheduleController {
     }
 
     @Post('notification')
-    async getTimes(@Body() input: NotificationDto): Promise<string[]> {
-        const notifications = this.notificationService.getNotificationTimes(input);
+    async getTimes(@Body() input: NotificationDto): Promise<{ times: string[], name: string }> {
+        const notifications = this.notificationService.getNotificationTimes(input); 
 
         return notifications;
     }

@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Schedule } from 'src/schedule/shedule.entity';
 import { NotificationDto } from './dto/notification.dto';
+import { NotificationResponseDto } from './dto/notification.dto';
 
 @Injectable()
 export class NotificationService {
-    getNotificationTimes(schedule: NotificationDto): string[] {
+    getNotificationTimes(schedule: NotificationDto): NotificationResponseDto {
         const notifications: string[] = [];
         const now = new Date();
 
@@ -15,9 +16,7 @@ export class NotificationService {
                 const [hours, minutes] = time.split(":").map(Number)
                 const date = new Date(today);
                 date.setHours(hours, minutes, 0, 0);
-                if(date > now){
-                    notifications.push(date.toLocaleString())
-                }
+                notifications.push(date.toLocaleString())
             }
         }else if(schedule.medicine_type === "interval"){
             const [hours, minutes] = schedule.medicine_type.split(':').map(Number);
@@ -35,7 +34,7 @@ export class NotificationService {
             }
 
         }
-        console.log(notifications)
-        return notifications;
+        // console.log(notifications)
+        return { times: notifications, name: schedule.medicine_name};
     }
 }

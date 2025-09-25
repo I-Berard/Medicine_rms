@@ -44,6 +44,19 @@ export class MedicineService {
         return medicine;
     }
 
+    async findOneByUserId (userId: number): Promise<Medicine[]>{
+        const medicine = await this.med_repo.find({
+            relations: ["user", "schedule"],
+            where: {
+                user: {id: userId}                
+            },
+        })
+
+        if(!medicine) throw new NotFoundException("Medicine not found");
+
+        return medicine
+    }
+
     async updateMedicine(id: number, input: UpdateMedicineDto): Promise<Medicine> {
         const medicine = await this.med_repo.findOne({where: {id}});
         if(!medicine) throw new NotFoundException("Medicine not found");

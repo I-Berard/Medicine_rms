@@ -14,6 +14,7 @@ import { MedicineController } from './medicine/medicine.controller';
 import { ScheduleController } from './schedule/schedule.controller';
 import { NotificationService } from './notification/notification.service';
 import { NotificationModule } from './notification/notification.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { NotificationModule } from './notification/notification.module';
     MedicineModule,
     AuthModule,
     ConfigModule.forRoot({isGlobal: true}),
-    NotificationModule
+    NotificationModule,
+    DashboardModule
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, NotificationService],
