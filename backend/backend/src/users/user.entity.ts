@@ -4,7 +4,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number; //this is an id
 
     @Column()
     name: string;
@@ -18,6 +18,6 @@ export class User {
     @Column({ default: false })
     isVerified: boolean;
 
-    @OneToMany(() => Medicine, (medicine) => medicine.user, {eager: true})
-    medicine: Medicine[];
+    @OneToMany(() => Medicine, (medicine) => medicine.user)
+    medicine: Medicine[]; // this links to all the medicine of the user
 }

@@ -9,7 +9,7 @@ export class MedicineController {
     constructor(private readonly medicineService: MedicineService){}
 
     @Post()
-    async createMedicine(@Body() input: CreateMedicineDto): Promise<Medicine> {
+    async createMedicine(@Body() input: CreateMedicineDto): Promise<Medicine> { // This one adds the a medicine into the database
         const medicine = await this.medicineService.createMedicine(input);
 
         return medicine
@@ -17,14 +17,14 @@ export class MedicineController {
 
     @Get()
     async getAllMedicine(): Promise<Medicine[]> {
-        const medicine = await this.medicineService.findAllMedicine();
+        const medicine = await this.medicineService.findAllMedicine(); // This one retreives all medicine from the db
 
         return medicine;
     }
 
     @Get(':id')
     async getOne(id: number): Promise<Medicine>{
-        const medicine = await this.medicineService.findOne(id);
+        const medicine = await this.medicineService.findOne(id); // This one gets a medicine based on its id provided
 
         return medicine;
     }
@@ -34,6 +34,6 @@ export class MedicineController {
         @Param('id', ParseIntPipe) id: number,
         @Body() body: UpdateMedicineDto,
     ) {
-        return this.medicineService.updateMedicine(id, body);
+        return this.medicineService.updateMedicine(id, body); // This one is used to update the medicine
     }
 }

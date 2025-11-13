@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class AuthMiddleware implements NestMiddleware {
+export class AuthMiddleware implements NestMiddleware { // A plain old middleware for authorization
   constructor(
     private configService: ConfigService
   ){}

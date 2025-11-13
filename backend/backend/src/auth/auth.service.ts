@@ -38,7 +38,7 @@ export class AuthService {
         private configService: ConfigService
     ){}
 
-    async login(data: LoginData): Promise<LoginReturn>{
+    async login(data: LoginData): Promise<LoginReturn>{ // This handles login logic
         const user = await this.userRepository.findOne({where: {email: data.email}})
         if(!user) throw new NotFoundException("User not found, First signup")
         
@@ -59,7 +59,7 @@ export class AuthService {
     }
 
     async signup(data: SingUpData): Promise<SignUpReturn>{
-        const existingUser = await this.userRepository.findOne({
+        const existingUser = await this.userRepository.findOne({ //This handles handles adding a user to the app
             where: {
                 email: data.email
             }

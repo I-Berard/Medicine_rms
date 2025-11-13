@@ -11,7 +11,7 @@ export class Medicine {
   name: string;
 
   @Column()
-  form: string; 
+  form: 'fixed_times' | 'interval'; 
 
   @Column()
   description: string;

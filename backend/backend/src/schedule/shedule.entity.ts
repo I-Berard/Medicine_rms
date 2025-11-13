@@ -6,7 +6,7 @@ export class Schedule {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Medicine, (medicine) => medicine.schedule, {eager: true})
+  @ManyToOne(() => Medicine, (medicine) => medicine.schedule)
   @JoinColumn({ name: 'medicine_id' })
   medicine: Medicine;
 
@@ -23,5 +23,5 @@ export class Schedule {
   times: number
 
   @Column()
-  medicine_type: string; 
+  medicine_type: 'fixed_times' | 'interval'; 
 }

@@ -17,7 +17,7 @@ export class ScheduleService {
     private readonly medRepo: Repository<Medicine>
   ) {}
 
-  async createIntervalSchedule(input: CreateScheduleIntervalDto): Promise<Schedule> {
+  async createIntervalSchedule(input: CreateScheduleIntervalDto): Promise<Schedule> { // This just creates a Schedule for a medicine based on intervals and start time
     const medicine = await this.medRepo.findOne({where: {id : input.medicine}});
 
     if(!medicine) throw new NotFoundException('Medicine Not Found')
@@ -29,7 +29,7 @@ export class ScheduleService {
     return this.scheduleRepo.save(schedule);
   }
 
-  async createTimesSchedule(input: CreateScheduleTimesDto): Promise<Schedule>{
+  async createTimesSchedule(input: CreateScheduleTimesDto): Promise<Schedule>{ // This one creates a schedule based on an array of times of the day 
     const medicine = await this.medRepo.findOne({where: {id : input.medicine}});
 
     if(!medicine) throw new NotFoundException('Medicine Not Found')
@@ -42,14 +42,14 @@ export class ScheduleService {
     return this.scheduleRepo.save(schedule);
   }
 
-  async findAll(): Promise<Schedule[]> {
+  async findAll(): Promise<Schedule[]> { // this just finds all schedules 
     return this.scheduleRepo.find({
       relations: ['medicine', 'medicine.user'],
     });
   }
 
   async findOne(id: number): Promise<Schedule> {
-    const schedule = await this.scheduleRepo.findOne({
+    const schedule = await this.scheduleRepo.findOne({ // This finds one schedule based on its id in the database
       where: { id },
       relations: ['medicine', 'medicine.user'],
     });
@@ -57,7 +57,7 @@ export class ScheduleService {
     return schedule;
   }
 
-  async updateSchedule(id: number, input: UpdateScheduleDto): Promise<Schedule> {
+  async updateSchedule(id: number, input: UpdateScheduleDto): Promise<Schedule> { // This one is used to update the schedule in the database
     const schedule = await this.scheduleRepo.findOne({ where: { id } });
     if (!schedule) throw new NotFoundException('Schedule not found');
 
@@ -73,7 +73,7 @@ export class ScheduleService {
   }
 
 
-  async removeSchedule(id: number): Promise<{ message: string }> {
+  async removeSchedule(id: number): Promise<{ message: string }> { // This pretty much does the job of removing the schedule from the database
     const result = await this.scheduleRepo.delete(id);
     if (result.affected === 0) throw new NotFoundException('Schedule not found');
     return { message: 'Schedule deleted successfully' };
