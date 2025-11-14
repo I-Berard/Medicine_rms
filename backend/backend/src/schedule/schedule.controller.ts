@@ -5,8 +5,10 @@ import { ScheduleService } from "./schedule.service";
 import { UpdateScheduleDto } from "./dto/update_schedule.dto";
 import { NotificationService } from "src/notification/notification.service";
 import { NotificationDto } from "src/notification/dto/notification.dto";
+import { ApiBearerAuth } from "@nestjs/swagger";
 
 @Controller("schedule")
+@ApiBearerAuth()
 export class ScheduleController {
     constructor(
         private readonly scheduleService: ScheduleService,

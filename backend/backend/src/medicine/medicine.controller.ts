@@ -3,7 +3,9 @@ import { MedicineService } from './medicine.service';
 import { CreateMedicineDto } from './dto/create_medicine.dto';
 import { Medicine } from './medicine.entity';
 import { UpdateMedicineDto } from './dto/update_medicine.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('medicine')
 export class MedicineController {
     constructor(private readonly medicineService: MedicineService){}
