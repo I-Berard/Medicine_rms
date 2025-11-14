@@ -1,7 +1,8 @@
 import { Controller, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
-import { AuthService, LoginData, SingUpData } from './auth.service';
+import { AuthService} from './auth.service';
 import { Post, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { LoginData, SignUpData } from './dto/auth.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -26,7 +27,7 @@ export class AuthController {
     @Post('signup')
     @ApiOperation({ summary: 'User signup' })
     @ApiResponse({ status: 201, description: 'User created successfully' })
-    async signup(@Body() data: SingUpData){
+    async signup(@Body() data: SignUpData){
         const response = await this.authService.signup(data)
 
         return {

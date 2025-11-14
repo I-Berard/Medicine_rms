@@ -5,30 +5,8 @@ import { Repository } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from 'src/users/user.service';
+import { LoginData, LoginReturn, SignUpData, SignUpReturn } from './dto/auth.dto';
 
-
-export class LoginData {
-    email: string
-    password: string
-}
-
-class LoginReturn {
-    data: any;
-    token: string;
-    message: string;
-}
-
-export class SingUpData {
-    name: string
-    email: string
-    password: string
-}
-
-class SignUpReturn {
-    data: any
-    token: string
-    message: string
-}
 
 @Injectable()
 export class AuthService {
@@ -58,7 +36,7 @@ export class AuthService {
         }
     }
 
-    async signup(data: SingUpData): Promise<SignUpReturn>{
+    async signup(data: SignUpData): Promise<SignUpReturn>{
         const existingUser = await this.userRepository.findOne({ //This handles handles adding a user to the app
             where: {
                 email: data.email
