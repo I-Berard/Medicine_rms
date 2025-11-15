@@ -6,6 +6,7 @@ import { UpdateScheduleDto } from "./dto/update_schedule.dto";
 import { NotificationService } from "src/notification/notification.service";
 import { NotificationDto } from "src/notification/dto/notification.dto";
 import { ApiBearerAuth } from "@nestjs/swagger";
+import { ScheduleDto } from "./dto/safe-schedule.dto";
 
 @Controller("schedule")
 @ApiBearerAuth()
@@ -16,35 +17,35 @@ export class ScheduleController {
     ){}
 
     @Post('times')
-    async createTimesSchedule(@Body() input: CreateScheduleTimesDto): Promise<Schedule> {
+    async createTimesSchedule(@Body() input: CreateScheduleTimesDto): Promise<ScheduleDto> {
         const schedule = await this.scheduleService.createTimesSchedule(input);
 
         return schedule
     }
     
     @Post('interval')
-    async createIntervalSchedule(@Body() input: CreateScheduleIntervalDto): Promise<Schedule>{
+    async createIntervalSchedule(@Body() input: CreateScheduleIntervalDto): Promise<ScheduleDto>{
         const schedule = await this.scheduleService.createIntervalSchedule(input);
 
         return schedule
     }
 
     @Get()
-    async findAll(): Promise<Schedule[]>{
+    async findAll(): Promise<ScheduleDto[]>{
         const schedules = await this.scheduleService.findAll();
 
         return schedules;
     }
 
     @Get(':id')
-    async findOne(@Param('id') id: number): Promise<Schedule> {
+    async findOne(@Param('id') id: number): Promise<ScheduleDto> {
         const schedule = await this.scheduleService.findOne(id);
 
         return schedule;   
     }
 
     @Patch(':id')
-    async updateSchedule(@Param('id') id: number, @Body() input: UpdateScheduleDto): Promise<Schedule> {
+    async updateSchedule(@Param('id') id: number, @Body() input: UpdateScheduleDto): Promise<string> {
         const schedule = await this.scheduleService.updateSchedule(id, input);
 
         return schedule;
